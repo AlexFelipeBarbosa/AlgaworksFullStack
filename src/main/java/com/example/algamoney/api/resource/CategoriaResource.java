@@ -3,6 +3,7 @@ package com.example.algamoney.api.resource;
 import com.example.algamoney.api.model.Categoria;
 import com.example.algamoney.api.repository.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -41,8 +42,13 @@ public class CategoriaResource {
     }
 
     @GetMapping("/{codigo}")
-    public Optional<Categoria> buscarPeloCodigo(@PathVariable Long codigo) {
-        return categoriaRepository.findById(codigo);
+    public ResponseEntity<?> buscarPeloCodigo(@PathVariable("codigo") Long codigo) {
+        Categoria categoria = categoriaRepository.findById(codigo).orElse(null);
+        // Retornar 404 Not Found caso não exista a categoria
+        if (categoria == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(categoria);
     }
-
 }
+
