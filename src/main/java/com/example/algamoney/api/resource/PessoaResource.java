@@ -42,4 +42,13 @@ public class PessoaResource {
         Pessoa pessoa = pessoaRepository.findById(codigo).orElse(null);
         return pessoa != null ? ResponseEntity.ok(pessoa) : ResponseEntity.notFound().build();
     }
+
+    @DeleteMapping("/{codigo}")
+    @ResponseStatus(HttpStatus.NO_CONTENT) //204
+    public void remover(@PathVariable Long codigo) {
+        pessoaRepository.deleteById(codigo);
+
+    }
+
+
 }
