@@ -59,6 +59,13 @@
 			<artifactId>jackson-datatype-jsr310</artifactId>
 		</dependency>
 
+		<!-- Mensagem mais amigavel no retorno da mensagemDesenvolvedor -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.9</version>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<plugins>
