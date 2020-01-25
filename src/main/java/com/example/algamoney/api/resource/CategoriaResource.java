@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -26,6 +27,8 @@ public class CategoriaResource {
 
     //@CrossOrigin
     @GetMapping
+    //@PreAuthorize("hasAuthority('ROLE_PESQUISAR_CATEGORIA') and #oauth2.hasScope('read')")
+    @PreAuthorize("hasAuthority('ROLE_PESQUISAR_CATEGORIA')")
     public List<Categoria> listar() {
         return categoriaRepository.findAll();
    /*
@@ -36,6 +39,8 @@ public class CategoriaResource {
     }
 
     @PostMapping
+    //@PreAuthorize("hasAuthority('ROLE_CADASTRAR_CATEGORIA') and #oauth2.hasScope('write')")
+    @PreAuthorize("hasAuthority('ROLE_CADASTRAR_CATEGORIA')")
     public ResponseEntity<Categoria> criar(@Valid @RequestBody Categoria categoria, HttpServletResponse response) {
         Categoria categoriaSalva = categoriaRepository.save(categoria);
         publisher.publishEvent(new RecursoCriadoEvent(this, response, categoriaSalva.getCodigo()));
@@ -44,6 +49,8 @@ public class CategoriaResource {
     }
 
     @GetMapping("/{codigo}")
+    //@PreAuthorize("hasAuthority('ROLE_PESQUISAR_CATEGORIA')and #oauth2.hasScope('read')")
+    @PreAuthorize("hasAuthority('ROLE_PESQUISAR_CATEGORIA')")
     public ResponseEntity<?> buscarPeloCodigo(@PathVariable("codigo") Long codigo) {
         Categoria categoria = categoriaRepository.findById(codigo).orElse(null);
         // Retornar 404 Not Found caso não exista a categoria
